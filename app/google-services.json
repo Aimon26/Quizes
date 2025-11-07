@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833735954700",
+    "project_id": "calculator-b6c1d398",
+    "storage_bucket": "calculator-b6c1d398.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833735954700:android:707e7e992be2bb5c06f929",
+        "android_client_info": {
+          "package_name": "com.aimon.app.quizes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYzZA3M2uNz_jEEsNra_em2ZUGiTGKltU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
