@@ -97,7 +97,7 @@ fun ScoreScreen(
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     onClick = {
-                        viewModel.addLeaderBoard((num * 100) / total)
+                        viewModel.addLeaderBoard(((num * 100) / total) as Long)
                         navController.navigate("home")
                     Log.d("xsxsxh","${(num * 100) / total}")
                     },

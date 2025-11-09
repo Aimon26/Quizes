@@ -16,26 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.aimon.app.quizes.R
-import com.aimon.app.quizes.core.component.NavGraph
 import com.aimon.app.quizes.fetures.leaderboard.data.LeaderboardNavigate
 
 @Composable
 fun LeaderBoardScreen(
-    navController: NavHostController,
+    navControllerX: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
-    val startDestination = LeaderboardNavigate.DailyLeaderBoard
+    val startDestination = LeaderboardNavigate.OverallLeaderBoard
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.index) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -44,7 +39,7 @@ fun LeaderBoardScreen(
 
             .background(color = colorResource(R.color.dark))
     ) {
-        if (currentDestination?.route == LeaderboardNavigate.DailyLeaderBoard.route || currentDestination?.route == LeaderboardNavigate.WeeklyLeaderBoard.route || currentDestination?.route == LeaderboardNavigate.MonthlyLeaderBoard.route) {
+        if (currentDestination?.route == LeaderboardNavigate.OverallLeaderBoard.route||currentDestination?.route == LeaderboardNavigate.DailyLeaderBoard.route || currentDestination?.route == LeaderboardNavigate.WeeklyLeaderBoard.route || currentDestination?.route == LeaderboardNavigate.MonthlyLeaderBoard.route) {
             PrimaryTabRow(
                 selectedTabIndex = selectedDestination,
                 containerColor = colorResource(R.color.light),
@@ -72,12 +67,19 @@ fun LeaderBoardScreen(
         NavHost(
             modifier = Modifier.weight(1f).fillMaxSize(),
             navController = navController,
-            startDestination = LeaderboardNavigate.DailyLeaderBoard.route
+            startDestination = LeaderboardNavigate.OverallLeaderBoard.route
         ) {
+
+            composable(route = LeaderboardNavigate.OverallLeaderBoard.route) {
+                OverallLeaderBoardScreen(navController=navControllerX)
+
+
+            }
             composable(route = LeaderboardNavigate.DailyLeaderBoard.route) {
 
 
             }
+
             composable(route = LeaderboardNavigate.WeeklyLeaderBoard.route) {
 
 

@@ -12,5 +12,5 @@ interface FireBaseRepository {
 
 data class LeaderBoard(
     val uuid: String,
-    val score: Int
+    val score: Long
 )

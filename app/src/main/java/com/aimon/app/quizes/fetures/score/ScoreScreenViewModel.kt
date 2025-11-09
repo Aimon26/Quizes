@@ -12,7 +12,7 @@ class ScoreScreenViewModel @Inject constructor(
     private val repository: FireBaseRepository
 ) : ViewModel(){
     fun addLeaderBoard(
-        score:Int
+        score: Long
     ){
         repository.addLeaderBoard(
             LeaderBoard(
