@@ -1,6 +1,5 @@
 package com.aimon.app.quizes.fetures.leaderboard.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aimon.app.quizes.fetures.leaderboard.data.LeaderBoardType
@@ -14,47 +13,49 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OverallLeaderBoardScreenViewModel @Inject constructor(
+class MonthlyLeaderBoardScreenViewModel @Inject constructor(
     val repository: LeaderBoardRepository
 
-) : ViewModel() {
-    private val _uiState= MutableStateFlow<UiState>(UiState())
-    var uiState=_uiState.asStateFlow()
+) : ViewModel(){
+    private val _uiState= MutableStateFlow< MonthlyLeaderBoardUiState>(MonthlyLeaderBoardUiState())
+    val uiState=_uiState.asStateFlow()
+    init{
+        getLeaderBoard(LeaderBoardType.Monthly)
 
-    init {
-        getLeaderBoard(type = LeaderBoardType.Overall)
     }
     fun getLeaderBoard(type: LeaderBoardType){
         viewModelScope.launch {
             try{
                 _uiState.update {
-                    state -> state.copy(loading = true)
+                        state -> state.copy(loading = true)
                 }
-                val result= repository.showLeaderBoard(type = type)
+                val result= repository.showLeaderBoard(type = LeaderBoardType.Monthly)
                 if (result.isSuccess){
                     _uiState.update {
                             state -> state.copy(loading = false, items = result.getOrDefault(emptyList()))
                     }
+
                 }
             }
             catch (e: Exception){
-                _uiState.update {
-                    state -> state.copy(
+                _uiState.update {state ->
+                    state.copy(
                         loading = false,
                         error = e.message
                     )
                 }
             }
-
         }
 
+
     }
+    data class MonthlyLeaderBoardUiState(
+        val loading: Boolean=false,
+        val items:List<Board> = listOf<Board>(),
+        val error: String?=null
+
+    )
+
 
 }
 
-data class UiState(
-    var loading: Boolean=false,
-    var items: List<Board> = listOf<Board>(),
-    var error: String?=null
-
-    )

@@ -76,16 +76,18 @@ fun LeaderBoardScreen(
 
             }
             composable(route = LeaderboardNavigate.DailyLeaderBoard.route) {
+                DailyLeaderBoardScreen(navController=navControllerX)
 
 
             }
 
             composable(route = LeaderboardNavigate.WeeklyLeaderBoard.route) {
-
+                WeeklyLeaderBoardScreen(navController=navControllerX)
 
             }
 
             composable(route = LeaderboardNavigate.MonthlyLeaderBoard.route) {
+                MonthlyLeaderBoardScreen(navController=navControllerX)
 
             }
 

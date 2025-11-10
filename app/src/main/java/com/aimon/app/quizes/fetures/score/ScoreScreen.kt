@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.aimon.app.quizes.R
 import com.aimon.app.quizes.ui.theme.QuizesTheme
+import kotlinx.coroutines.flow.collectLatest
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -47,6 +52,16 @@ fun ScoreScreen(
     viewModel: ScoreScreenViewModel= hiltViewModel(),
     navController: NavController
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.scoreSaveState.collectLatest {
+            if(it == true){
+                navController.navigate(route = "home")
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -97,13 +112,17 @@ fun ScoreScreen(
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     onClick = {
-                        viewModel.addLeaderBoard(((num * 100) / total) as Long)
-                        navController.navigate("home")
-                    Log.d("xsxsxh","${(num * 100) / total}")
+                        viewModel.addLeaderBoard(((num * 100) / total).toLong())
                     },
-                    modifier = Modifier
+                    modifier = Modifier,
+                    enabled = !uiState.isLoading
                 ) {
-                    Text("Go to Home")
+                    if(uiState.isLoading){
+                        CircularProgressIndicator()
+                    }else{
+                        Text("Go to Home")
+                    }
+
                 }
             }
 
