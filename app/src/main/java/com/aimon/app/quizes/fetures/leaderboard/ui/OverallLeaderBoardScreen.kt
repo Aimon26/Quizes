@@ -184,7 +184,7 @@ fun LeaderboardItem(rank: Int, board: Board) {
                 textAlign = TextAlign.Start
             )
             Text(
-                text = board.uuid.take(10),
+                text = board.username,
                 fontSize = 16.sp,
                 color = Color.White,
                 modifier = Modifier.weight(1f),
@@ -205,9 +205,9 @@ fun LeaderboardItem(rank: Int, board: Board) {
 @Composable
 fun PreviewLeaderboard() {
     val sample = listOf(
-        Board(uuid = "User123", score = 95, timeStamp = 1L),
-        Board(uuid = "User456", score = 90, timeStamp = 1L),
-        Board(uuid = "User789", score = 85, timeStamp = 1L)
+        Board(uuid = "User123", score = 95, timeStamp = 1L, username = "X"),
+        Board(uuid = "User456", score = 90, timeStamp = 1L, username = "Y"),
+        Board(uuid = "User789", score = 85, timeStamp = 1L, username = "Z")
     )
     QuizesTheme {
         Column(

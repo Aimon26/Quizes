@@ -7,6 +7,7 @@ interface LeaderBoardRepository {
 }
 data class Board(
     val uuid: String,
+    val username: String,
     val score: Long,
     val timeStamp: Long
 )

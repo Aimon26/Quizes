@@ -60,6 +60,8 @@ fun SignUpScreen(
     }
     var mail by remember { mutableStateOf<String>("") }
     var pass by remember { mutableStateOf<String>("") }
+    var username by remember { mutableStateOf<String>("") }
+    var age by remember { mutableStateOf<String>("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,6 +70,26 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text("SignUp to Quizzie", color = Color.White, fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+            value = username,
+            onValueChange = {
+                username = it
+            },
+            label = {
+                Text("Give Username")
+            }
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+            value ="${age}",
+            onValueChange = {
+                age= it
+            },
+            label = {
+                Text("Give Your Age")
+            }
+        )
         Spacer(modifier = Modifier.height(30.dp))
         TextField(
             value = mail,
@@ -91,7 +113,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             onClick = {
-                viewModel.signUp(mail,pass)
+                viewModel.signUp(age,mail, pass,username)
             }
         ) {
             Text("Create an Account", fontSize = 18.sp)
@@ -100,8 +122,6 @@ fun SignUpScreen(
         TextButton(
             onClick = {
                 navController.navigate(route = "login")
-
-
             }
         ) {
             Text("Already Have an Account? Login", color = Color.White)

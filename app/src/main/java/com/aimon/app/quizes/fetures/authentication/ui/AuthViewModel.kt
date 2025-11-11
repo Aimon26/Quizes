@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +20,7 @@ class AuthViewModel @Inject constructor(
 
 ): ViewModel(){
     private val auth: FirebaseAuth= FirebaseAuth.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
     private val _authState= Channel<AuthState?>()
     val authState=_authState.receiveAsFlow()
 
@@ -50,8 +53,10 @@ class AuthViewModel @Inject constructor(
         }
     }
     fun signUp(
+        age:String,
         mail: String,
-        pass: String
+        pass: String,
+        username: String
     ){
         viewModelScope.launch {
             if (mail.isEmpty() || pass.isEmpty()) {
@@ -61,6 +66,12 @@ class AuthViewModel @Inject constructor(
                 auth.createUserWithEmailAndPassword(mail, pass)
                     .addOnSuccessListener {
                         viewModelScope.launch {
+                            firestore.collection("users").document(auth.currentUser!!.uid)
+                                .set(hashMapOf(
+                                    "username" to username,
+                                    "email" to mail,
+                                    "age " to age
+                                )).await()
                             _authState.send(AuthState.Authenticated)
                         }
                     }

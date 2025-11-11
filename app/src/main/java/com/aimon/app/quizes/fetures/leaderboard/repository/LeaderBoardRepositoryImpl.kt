@@ -27,12 +27,20 @@ class LeaderBoardRepositoryImpl @Inject constructor(
         val items = mutableListOf<Board>()
 
         try {
+            val allUsers = db.collection("users").get().await().map {
+                User(
+                    username = it.data["username"] as String,
+                    uuid = it.id
+                )
+            }
+
             db.collection("scores").get().await().map {
                 items.add(
                     Board(
                         uuid = it.data["uuid"] as String,
                         score = it.data["score"] as Long,
-                        timeStamp = it.data["timeStamp"] as Long
+                        timeStamp = it.data["timeStamp"] as Long,
+                        username = allUsers.find{ user -> user.uuid == it.data["uuid"] }?.username ?: ""
                     )
                 )
             }
@@ -120,6 +128,11 @@ class LeaderBoardRepositoryImpl @Inject constructor(
 
 
 }
+
+data class User(
+    val username: String,
+    val uuid: String
+)
 
 
 
